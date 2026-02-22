@@ -37,18 +37,18 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <header className="bg-navy-900 text-white border-b border-navy-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/chat" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">D</span>
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                <span className="text-navy-900 font-bold text-sm">D</span>
               </div>
-              <span className="font-bold text-xl text-gray-900">Doyo</span>
+              <span className="font-bold text-xl">Doyo</span>
             </Link>
 
             <div className="flex items-center gap-4">
-              <button className="relative p-2 text-gray-500 hover:text-gray-700">
+              <button className="relative p-2 text-gray-300 hover:text-white">
                 <Bell className="w-5 h-5" />
                 {unreadCount > 0 && (
                   <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
@@ -57,8 +57,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 )}
               </button>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-700">{user?.first_name || user?.email}</span>
-                <button onClick={handleLogout} className="p-2 text-gray-500 hover:text-gray-700">
+                <span className="text-sm text-gray-300">{user?.first_name || user?.email}</span>
+                <button onClick={handleLogout} className="p-2 text-gray-300 hover:text-white">
                   <LogOut className="w-5 h-5" />
                 </button>
               </div>
@@ -82,8 +82,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                     isActive
-                      ? "bg-primary-50 text-primary-700"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                      ? "bg-primary-100 text-primary-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-navy-900"
                   )}
                 >
                   <Icon className="w-5 h-5" />
