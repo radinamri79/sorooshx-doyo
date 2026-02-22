@@ -64,3 +64,4 @@ logs/
 # Media
 media/
 static/collected/
+staticfiles/

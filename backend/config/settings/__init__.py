@@ -1,1 +1,1 @@
-from .dev import *  # noqa: F401, F403
+# Settings loaded via DJANGO_SETTINGS_MODULE env var

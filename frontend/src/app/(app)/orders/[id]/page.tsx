@@ -69,7 +69,7 @@ export default function OrderDetailPage({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-gray-500">Provider</p>
             <p className="font-medium">{order.provider?.business_name}</p>
@@ -106,7 +106,7 @@ export default function OrderDetailPage({
         )}
 
         {/* Status Actions */}
-        <div className="flex gap-2 mt-6">
+        <div className="flex flex-wrap gap-2 mt-6">
           {order.status === "pending" && (
             <>
               <Button onClick={() => handleStatusUpdate("accepted")} size="sm">
@@ -141,13 +141,13 @@ export default function OrderDetailPage({
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Status History</h2>
           <div className="space-y-3">
             {order.status_logs.map((log) => (
-              <div key={log.id} className="flex items-center gap-3 text-sm">
-                <div className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
-                <div>
+              <div key={log.id} className="flex items-start gap-3 text-sm">
+                <div className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0 mt-1.5" />
+                <div className="min-w-0">
                   <span className="font-medium">
                     {log.from_status} → {log.to_status}
                   </span>
-                  <span className="text-gray-500 ml-2">
+                  <span className="text-gray-500 block sm:inline sm:ml-2">
                     by {log.changed_by_email} · {formatDateTime(log.created_at)}
                   </span>
                 </div>

@@ -6,10 +6,7 @@ from .models import Review
 
 
 def update_provider_rating(provider):
-    stats = provider.reviews.aggregate(
-        avg_rating=Avg("rating"),
-        count=provider.reviews.count(),
-    )
+    stats = provider.reviews.aggregate(avg_rating=Avg("rating"))
     provider.average_rating = round(stats["avg_rating"] or 0, 2)
     provider.total_reviews = provider.reviews.count()
     provider.save(update_fields=["average_rating", "total_reviews"])

@@ -67,10 +67,38 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20 md:pb-6">
-        {children}
-      </main>
+      {/* Desktop Sidebar + Main Content */}
+      <div className="flex">
+        {/* Sidebar (Desktop only) */}
+        <aside className="hidden md:flex flex-col w-56 border-r border-gray-200 bg-white min-h-[calc(100vh-4rem)] sticky top-16">
+          <nav className="flex flex-col gap-1 p-3 mt-2">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-primary-50 text-primary-700"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  )}
+                >
+                  <Icon className="w-5 h-5" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20 md:pb-6">
+          {children}
+        </main>
+      </div>
 
       {/* Bottom Navigation (Mobile) */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">

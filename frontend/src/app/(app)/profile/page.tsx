@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/auth";
 import { authApi } from "@/lib/api";
-import { User, UserProfile } from "@/types";
+import { User } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";

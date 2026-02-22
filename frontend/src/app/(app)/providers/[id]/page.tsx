@@ -52,7 +52,7 @@ export default function ProviderDetailPage({
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">{provider.business_name}</h1>
-            <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-sm text-gray-600">
               <span className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" /> {provider.city}
               </span>
@@ -88,7 +88,7 @@ export default function ProviderDetailPage({
             {provider.services?.map((service) => (
               <div
                 key={service.id}
-                className="flex items-center justify-between p-4 border border-gray-100 rounded-lg"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border border-gray-100 rounded-lg gap-3"
               >
                 <div>
                   <h3 className="font-medium text-gray-900">{service.title}</h3>
@@ -97,9 +97,9 @@ export default function ProviderDetailPage({
                     <Clock className="w-3.5 h-3.5" /> {service.duration_minutes} min
                   </span>
                 </div>
-                <div className="text-right">
+                <div className="sm:text-right flex sm:flex-col items-center sm:items-end gap-2">
                   <p className="font-semibold text-gray-900">{formatPrice(service.price)}</p>
-                  <Button size="sm" className="mt-2">
+                  <Button size="sm">
                     Book
                   </Button>
                 </div>
@@ -113,7 +113,7 @@ export default function ProviderDetailPage({
       {provider.schedules && provider.schedules.length > 0 && (
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Schedule</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
             {provider.schedules.map((schedule) => (
               <div
                 key={schedule.id}

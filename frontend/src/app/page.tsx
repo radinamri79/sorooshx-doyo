@@ -30,7 +30,7 @@ export default function HomePage() {
 
         {/* Hero Section */}
         <main className="flex flex-col items-center text-center pt-20 pb-32">
-          <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
             Find Local Services
             <br />
             <span className="text-primary-600">Powered by AI</span>
@@ -39,7 +39,7 @@ export default function HomePage() {
             Tell our AI assistant what you need, and we&apos;ll match you with the
             perfect service provider. From cleaning to tutoring, Doyo has you covered.
           </p>
-          <div className="mt-10 flex gap-4">
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <Link
               href="/auth/register"
               className="bg-primary-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-primary-700 transition-colors"
