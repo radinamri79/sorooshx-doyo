@@ -69,6 +69,12 @@ export const authApi = {
       { method: "POST", body: JSON.stringify(data) }
     ),
 
+  googleLogin: (code: string) =>
+    apiFetch<{ access: string; refresh: string; user: User }>(
+      `${API_URL}/users/auth/google/`,
+      { method: "POST", body: JSON.stringify({ code }) }
+    ),
+
   refreshToken: (refresh: string) =>
     apiFetch<{ access: string }>(`${API_URL}/auth/token/refresh/`, {
       method: "POST",
