@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/auth/login", label: "Sign up / Log in" },
+  { href: "/become-tasker", label: "Become a Tasker" },
 ];
 
 export default function Header() {
@@ -108,7 +109,7 @@ export default function Header() {
               ))}
             </div>
 
-            <div className="mt-8 px-4">
+            {/* <div className="mt-8 px-4">
               <Link
                 href="/become-tasker"
                 onClick={() => setMenuOpen(false)}
@@ -116,7 +117,7 @@ export default function Header() {
               >
                 Become a Tasker
               </Link>
-            </div>
+            </div> */}
           </nav>
         </div>
       )}
