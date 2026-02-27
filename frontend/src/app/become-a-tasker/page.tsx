@@ -17,18 +17,228 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-// Sample locations (in production, fetch from backend)
+// Comprehensive US and Canadian locations
 const LOCATIONS = [
-  "New York, NY",
-  "Los Angeles, CA",
-  "Chicago, IL",
-  "Houston, TX",
+  // United States
+  "Birmingham, AL",
+  "Montgomery, AL",
+  "Huntsville, AL",
+  "Anchorage, AK",
+  "Juneau, AK",
+  "Fairbanks, AK",
   "Phoenix, AZ",
-  "Philadelphia, PA",
-  "San Antonio, TX",
+  "Mesa, AZ",
+  "Chandler, AZ",
+  "Scottsdale, AZ",
+  "Tempe, AZ",
+  "Little Rock, AR",
+  "Fayetteville, AR",
+  "Springdale, AR",
+  "Los Angeles, CA",
   "San Diego, CA",
-  "Dallas, TX",
   "San Jose, CA",
+  "San Francisco, CA",
+  "Fresno, CA",
+  "Sacramento, CA",
+  "Long Beach, CA",
+  "Oakland, CA",
+  "Denver, CO",
+  "Colorado Springs, CO",
+  "Aurora, CO",
+  "Bridgeport, CT",
+  "New Haven, CT",
+  "Hartford, CT",
+  "Wilmington, DE",
+  "Dover, DE",
+  "Jacksonville, FL",
+  "Miami, FL",
+  "Tampa, FL",
+  "Orlando, FL",
+  "St. Petersburg, FL",
+  "Hialeah, FL",
+  "Atlanta, GA",
+  "Columbus, GA",
+  "Augusta, GA",
+  "Savannah, GA",
+  "Honolulu, HI",
+  "Boise, ID",
+  "Nampa, ID",
+  "Meridian, ID",
+  "Chicago, IL",
+  "Aurora, IL",
+  "Joliet, IL",
+  "Naperville, IL",
+  "Rockford, IL",
+  "Indianapolis, IN",
+  "Fort Wayne, IN",
+  "Evansville, IN",
+  "Des Moines, IA",
+  "Cedar Rapids, IA",
+  "Davenport, IA",
+  "Kansas City, KS",
+  "Wichita, KS",
+  "Overland Park, KS",
+  "Louisville, KY",
+  "Lexington, KY",
+  "New Orleans, LA",
+  "Baton Rouge, LA",
+  "Lafayette, LA",
+  "Portland, ME",
+  "Lewiston, ME",
+  "Bangor, ME",
+  "Baltimore, MD",
+  "Columbia, MD",
+  "Gaithersburg, MD",
+  "Boston, MA",
+  "Worcester, MA",
+  "Springfield, MA",
+  "Cambridge, MA",
+  "Detroit, MI",
+  "Grand Rapids, MI",
+  "Warren, MI",
+  "Sterling Heights, MI",
+  "Minneapolis, MN",
+  "Saint Paul, MN",
+  "Rochester, MN",
+  "Bloomington, MN",
+  "Jackson, MS",
+  "Gulfport, MS",
+  "Southaven, MS",
+  "Kansas City, MO",
+  "Saint Louis, MO",
+  "Springfield, MO",
+  "Columbia, MO",
+  "Billings, MT",
+  "Missoula, MT",
+  "Great Falls, MT",
+  "Omaha, NE",
+  "Lincoln, NE",
+  "Bellevue, NE",
+  "Las Vegas, NV",
+  "Henderson, NV",
+  "Reno, NV",
+  "North Las Vegas, NV",
+  "Manchester, NH",
+  "Nashua, NH",
+  "Newark, NJ",
+  "Jersey City, NJ",
+  "Paterson, NJ",
+  "Elizabeth, NJ",
+  "Albuquerque, NM",
+  "Las Cruces, NM",
+  "Santa Fe, NM",
+  "New York, NY",
+  "Buffalo, NY",
+  "Rochester, NY",
+  "Yonkers, NY",
+  "Charlotte, NC",
+  "Raleigh, NC",
+  "Greensboro, NC",
+  "Durham, NC",
+  "Bismarck, ND",
+  "Fargo, ND",
+  "Grand Forks, ND",
+  "Columbus, OH",
+  "Cleveland, OH",
+  "Cincinnati, OH",
+  "Toledo, OH",
+  "Akron, OH",
+  "Oklahoma City, OK",
+  "Tulsa, OK",
+  "Norman, OK",
+  "Portland, OR",
+  "Eugene, OR",
+  "Salem, OR",
+  "Gresham, OR",
+  "Philadelphia, PA",
+  "Pittsburgh, PA",
+  "Allentown, PA",
+  "Providence, RI",
+  "Warwick, RI",
+  "Cranston, RI",
+  "Charleston, SC",
+  "Columbia, SC",
+  "Greenville, SC",
+  "Sioux Falls, SD",
+  "Rapid City, SD",
+  "Memphis, TN",
+  "Nashville, TN",
+  "Knoxville, TN",
+  "Houston, TX",
+  "San Antonio, TX",
+  "Dallas, TX",
+  "Austin, TX",
+  "Fort Worth, TX",
+  "El Paso, TX",
+  "Arlington, TX",
+  "Salt Lake City, UT",
+  "West Valley City, UT",
+  "Provo, UT",
+  "Burlington, VT",
+  "Rutland, VT",
+  "Virginia Beach, VA",
+  "Richmond, VA",
+  "Arlington, VA",
+  "Alexandria, VA",
+  "Seattle, WA",
+  "Spokane, WA",
+  "Tacoma, WA",
+  "Vancouver, WA",
+  "Charleston, WV",
+  "Huntington, WV",
+  "Milwaukee, WI",
+  "Madison, WI",
+  "Green Bay, WI",
+  "Racine, WI",
+  "Cheyenne, WY",
+  "Casper, WY",
+  "Laramie, WY",
+
+  // Canada
+  "Calgary, AB",
+  "Edmonton, AB",
+  "Red Deer, AB",
+  "Lethbridge, AB",
+  "Vancouver, BC",
+  "Victoria, BC",
+  "Burnaby, BC",
+  "Surrey, BC",
+  "Kelowna, BC",
+  "Winnipeg, MB",
+  "Brandon, MB",
+  "Flin Flon, MB",
+  "Saint John, NB",
+  "Moncton, NB",
+  "Fredericton, NB",
+  "St. John's, NL",
+  "Corner Brook, NL",
+  "Halifax, NS",
+  "Sydney, NS",
+  "Cape Breton, NS",
+  "Toronto, ON",
+  "Ottawa, ON",
+  "Mississauga, ON",
+  "Brampton, ON",
+  "Hamilton, ON",
+  "London, ON",
+  "Kitchener, ON",
+  "Markham, ON",
+  "Charlottetown, PE",
+  "Summerside, PE",
+  "Montreal, QC",
+  "Quebec City, QC",
+  "Gatineau, QC",
+  "Laval, QC",
+  "Sherbrooke, QC",
+  "Regina, SK",
+  "Saskatoon, SK",
+  "Prince Albert, SK",
+  "Yellowknife, NT",
+  "Hay River, NT",
+  "Iqaluit, NU",
+  "Rankin Inlet, NU",
+  "Whitehorse, YT",
+  "Dawson City, YT",
 ];
 
 // Earnings estimate based on category (example rates)
@@ -88,21 +298,21 @@ export default function BecomeATaskerPage() {
 
       <main className="flex-1">
         {/* ─── Hero Section ─── */}
-        <section className="relative bg-navy-900 pt-12 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24 overflow-hidden">
+        <section className="relative bg-navy-900 pt-28 lg:pt-32 pb-20 sm:pb-28 lg:pb-36 overflow-hidden">
           {/* Decorative elements */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary-500/10 rounded-full blur-3xl" />
+            <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary-500/15 rounded-full blur-3xl" />
             <div className="absolute -bottom-20 -left-40 w-[400px] h-[400px] bg-navy-700/50 rounded-full blur-3xl" />
           </div>
 
-          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-[1.1]">
                 Earn money{" "}
                 <span className="text-primary-500">your way.</span>
               </h1>
-              <p className="text-lg sm:text-xl text-gray-300 mb-2">
-                See how much you can make tasking as a service provider
+              <p className="text-base sm:text-lg lg:text-xl text-gray-200 max-w-2xl mx-auto font-medium">
+                See how much you can make tasking as a service provider on Doyo
               </p>
             </div>
           </div>
@@ -441,8 +651,18 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p className="font-medium text-navy-900">To become a Doyo service provider, you will need to meet the following requirements:</p>
+                  <ul className="list-disc list-inside space-y-2 text-sm">
+                    <li>Be at least 18 years old</li>
+                    <li>Be able to work in one of our active cities</li>
+                    <li>Consent to an ID verification check to keep our platform safe for all users</li>
+                    <li>Have a checking account with a financial institution for payments</li>
+                    <li>Have a smartphone (iOS or Android) to manage your tasks through our app</li>
+                    <li>Provide a valid Social Security number (US) or Social Insurance Number (Canada)</li>
+                    <li>In some locations, pay a one-time registration fee to help us maintain service quality</li>
+                    <li>In certain regions, you may need to submit a business license confirming you are a sole proprietor</li>
+                  </ul>
                 </div>
               </details>
 
@@ -454,8 +674,8 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p>You can decide the categories in which you task and the skills you use. For some categories, you don't necessarily need previous experience (like Delivery or Errands). For other categories (like Minor Home Repairs, IKEA Assembly), you should have — or be able and willing to learn — the proper skills and tools to complete the tasks.</p>
                 </div>
               </details>
 
@@ -467,8 +687,8 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p>Once you complete registration steps including creating your Doyo profile, make sure you set your work area and availability to show up in client search results. If you don't get task invitations, consider adjusting your rates, your work area, adding availability and additional categories, and editing your profile information to make sure it's clear to clients which services you offer.</p>
                 </div>
               </details>
 
@@ -480,8 +700,9 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p>Doyo uses direct deposit to pay service providers, so a valid checking account, routing or IBAN number, and billing address are required. During registration, you'll add your bank information and billing address to get paid through the app. Savings accounts, prepaid debit cards, and reloadable bank cards aren't valid, even if they accept direct deposits.</p>
+                  <p className="text-sm">We take protecting your personal information seriously and use the latest encryption technologies available. Your information is never shared with third parties and is for internal use only.</p>
                 </div>
               </details>
 
@@ -493,8 +714,8 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p>You can see the complete list of cities where Doyo operates in the location selector above during registration. We're currently active across the USA and Canada with plans to expand further.</p>
                 </div>
               </details>
 
@@ -506,8 +727,8 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p>You can task in 16+ categories on Doyo and use a variety of skills on any given day. See the list of available categories in the selector above during registration. Whether you're skilled in handyman work, moving, cleaning, or countless other services, there's something for everyone on Doyo!</p>
                 </div>
               </details>
 
@@ -519,8 +740,8 @@ export default function BecomeATaskerPage() {
                   </span>
                   <ChevronDown className="w-5 h-5 text-primary-600 group-open:rotate-180 transition-transform" />
                 </summary>
-                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white">
-                  <p>Answer coming soon...</p>
+                <div className="px-4 sm:px-6 py-4 text-gray-600 border border-t-0 border-gray-200 rounded-b-lg bg-white space-y-3">
+                  <p>Processing time may vary by city, but most applicants are able to begin tasking within four business days of finishing registration. You'll receive a notification once your registration is processed. If we need additional information from you to process your registration, we will reach out.</p>
                 </div>
               </details>
             </div>
