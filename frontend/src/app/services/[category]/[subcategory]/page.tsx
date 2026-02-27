@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
-import { providersApi } from "@/lib/api";
+import { servicesApi } from "@/lib/api";
 import { ServiceCategory } from "@/types";
 import {
   ChevronRight,
@@ -27,7 +27,7 @@ export default function SubcategoryPage() {
   useEffect(() => {
     if (!categorySlug) return;
     setIsLoading(true);
-    providersApi
+    servicesApi
       .categoryBySlug(categorySlug)
       .then((cat) => {
         setParent(cat);

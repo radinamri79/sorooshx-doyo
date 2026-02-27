@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { providersApi } from "@/lib/api";
+import { providersApi, servicesApi } from "@/lib/api";
 import { Provider, ServiceCategory } from "@/types";
 import Spinner from "@/components/ui/Spinner";
 import { Star, MapPin, CheckCircle } from "lucide-react";
@@ -21,7 +21,7 @@ export default function ProvidersPage() {
 
   const loadCategories = async () => {
     try {
-      const data = await providersApi.categories();
+      const data = await servicesApi.categories();
       setCategories(data);
     } catch {
       // silently fail

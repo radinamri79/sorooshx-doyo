@@ -90,7 +90,19 @@ export const authApi = {
     }),
 };
 
-// Providers API
+// Services API (categories)
+export const servicesApi = {
+  categories: () =>
+    apiFetch<ServiceCategory[]>(`${API_URL}/services/categories/`),
+
+  categoryBySlug: (slug: string) =>
+    apiFetch<ServiceCategory>(`${API_URL}/services/categories/by-slug/${slug}/`),
+
+  allFlat: () =>
+    apiFetch<ServiceCategory[]>(`${API_URL}/services/categories/all-flat/`),
+};
+
+// Providers API (service providers/users)
 export const providersApi = {
   list: (params?: Record<string, string>) => {
     const query = params ? "?" + new URLSearchParams(params).toString() : "";
@@ -99,12 +111,6 @@ export const providersApi = {
 
   get: (id: string) =>
     apiFetch<ProviderDetail>(`${API_URL}/providers/${id}/`),
-
-  categories: () =>
-    apiFetch<ServiceCategory[]>(`${API_URL}/providers/categories/`),
-
-  categoryBySlug: (slug: string) =>
-    apiFetch<ServiceCategory>(`${API_URL}/providers/categories/by-slug/${slug}/`),
 };
 
 // Orders API

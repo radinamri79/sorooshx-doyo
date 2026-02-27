@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
-import { providersApi } from "@/lib/api";
+import { servicesApi } from "@/lib/api";
 import { ServiceCategory } from "@/types";
 import {
   Star,
@@ -47,182 +47,261 @@ const categoryIcons: Record<string, React.ElementType> = {
   shield: Shield,
 };
 
-const categoryColors: Record<string, string> = {
-  featured: "from-amber-500 to-orange-500",
-  handyman: "from-blue-500 to-indigo-500",
-  moving: "from-emerald-500 to-teal-500",
-  "furniture-assembly": "from-violet-500 to-purple-500",
-  mounting: "from-sky-500 to-blue-500",
-  cleaning: "from-pink-500 to-rose-500",
-  "shopping-delivery": "from-orange-500 to-red-500",
-  "ikea-services": "from-yellow-500 to-amber-500",
-  yardwork: "from-green-500 to-emerald-500",
-  holidays: "from-red-500 to-pink-500",
-  "winter-tasks": "from-cyan-500 to-blue-500",
-  "personal-assistant": "from-indigo-500 to-violet-500",
-  "baby-prep": "from-rose-400 to-pink-400",
-  "online-tasks": "from-teal-500 to-cyan-500",
-  office: "from-slate-500 to-gray-600",
-  contactless: "from-lime-500 to-green-500",
+const categoryColors: Record<
+  string,
+  { gradient: string; top: string; bottom: string; bg: string; text: string }
+> = {
+  featured: {
+    gradient: "from-amber-500 to-orange-500",
+    top: "bg-amber-400",
+    bottom: "bg-amber-500",
+    bg: "bg-amber-50",
+    text: "text-amber-700",
+  },
+  handyman: {
+    gradient: "from-blue-500 to-indigo-500",
+    top: "bg-blue-400",
+    bottom: "bg-blue-500",
+    bg: "bg-blue-50",
+    text: "text-blue-700",
+  },
+  moving: {
+    gradient: "from-emerald-500 to-teal-500",
+    top: "bg-emerald-400",
+    bottom: "bg-emerald-500",
+    bg: "bg-emerald-50",
+    text: "text-emerald-700",
+  },
+  "furniture-assembly": {
+    gradient: "from-violet-500 to-purple-500",
+    top: "bg-violet-400",
+    bottom: "bg-violet-500",
+    bg: "bg-violet-50",
+    text: "text-violet-700",
+  },
+  mounting: {
+    gradient: "from-sky-500 to-blue-500",
+    top: "bg-sky-400",
+    bottom: "bg-sky-500",
+    bg: "bg-sky-50",
+    text: "text-sky-700",
+  },
+  cleaning: {
+    gradient: "from-pink-500 to-rose-500",
+    top: "bg-pink-400",
+    bottom: "bg-pink-500",
+    bg: "bg-pink-50",
+    text: "text-pink-700",
+  },
+  "shopping-delivery": {
+    gradient: "from-orange-500 to-red-500",
+    top: "bg-orange-400",
+    bottom: "bg-orange-500",
+    bg: "bg-orange-50",
+    text: "text-orange-700",
+  },
+  "ikea-services": {
+    gradient: "from-yellow-500 to-amber-500",
+    top: "bg-yellow-400",
+    bottom: "bg-yellow-500",
+    bg: "bg-yellow-50",
+    text: "text-yellow-700",
+  },
+  yardwork: {
+    gradient: "from-green-500 to-emerald-500",
+    top: "bg-green-400",
+    bottom: "bg-green-500",
+    bg: "bg-green-50",
+    text: "text-green-700",
+  },
+  holidays: {
+    gradient: "from-red-500 to-pink-500",
+    top: "bg-red-400",
+    bottom: "bg-red-500",
+    bg: "bg-red-50",
+    text: "text-red-700",
+  },
+  "winter-tasks": {
+    gradient: "from-cyan-500 to-blue-500",
+    top: "bg-cyan-400",
+    bottom: "bg-cyan-500",
+    bg: "bg-cyan-50",
+    text: "text-cyan-700",
+  },
+  "personal-assistant": {
+    gradient: "from-indigo-500 to-violet-500",
+    top: "bg-indigo-400",
+    bottom: "bg-indigo-500",
+    bg: "bg-indigo-50",
+    text: "text-indigo-700",
+  },
+  "baby-prep": {
+    gradient: "from-rose-400 to-pink-400",
+    top: "bg-rose-300",
+    bottom: "bg-rose-400",
+    bg: "bg-rose-50",
+    text: "text-rose-700",
+  },
+  "online-tasks": {
+    gradient: "from-teal-500 to-cyan-500",
+    top: "bg-teal-400",
+    bottom: "bg-teal-500",
+    bg: "bg-teal-50",
+    text: "text-teal-700",
+  },
+  office: {
+    gradient: "from-slate-500 to-gray-600",
+    top: "bg-slate-400",
+    bottom: "bg-slate-600",
+    bg: "bg-slate-50",
+    text: "text-slate-700",
+  },
+  contactless: {
+    gradient: "from-lime-500 to-green-500",
+    top: "bg-lime-400",
+    bottom: "bg-lime-500",
+    bg: "bg-lime-50",
+    text: "text-lime-700",
+  },
 };
 
 export default function ServicesPage() {
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    providersApi
+    servicesApi
       .categories()
       .then(setCategories)
       .catch(() => {})
       .finally(() => setIsLoading(false));
   }, []);
 
+  const handleSearch = () => {
+    if (searchValue.trim()) {
+      window.location.href = `/providers?search=${encodeURIComponent(searchValue)}`;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-navy-900 pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Your to-do list is on us.
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-              Hire a trusted Tasker and get things done — from home repairs to cleaning and everything in between.
-            </p>
+        {/* Hero Section with Background */}
+        <section className="relative overflow-hidden pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32">
+          {/* Background Image with Blur */}
+          <div
+            className="absolute inset-0 bg-cover bg-center blur-sm"
+            style={{
+              backgroundImage:
+                'linear-gradient(135deg, rgb(13, 26, 61, 0.85) 0%, rgb(13, 26, 61, 0.85) 100%), url("data:image/svg+xml,%3Csvg width=%27100%27 height=%27100%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath d=%27M0 0h100v100H0z%27 fill=%27%230d1a3d%27/%3E%3C/svg%3E")',
+            }}
+          />
 
-            {/* Search Bar */}
-            <div className="max-w-xl mx-auto">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="What do you need help with?"
-                  className="w-full pl-12 pr-4 py-4 rounded-full text-base bg-white text-navy-900 placeholder-gray-400 shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.currentTarget.value) {
-                      window.location.href = `/providers?search=${encodeURIComponent(e.currentTarget.value)}`;
-                    }
-                  }}
-                />
+          {/* Content */}
+          <div className="relative z-10">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-12">
+                Your to-do list is on us.
+              </h1>
+
+              {/* Search Bar in Hero */}
+              <div className="max-w-2xl mx-auto">
+                <div className="relative">
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="What do you need help with?"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleSearch();
+                    }}
+                    className="w-full pl-14 pr-6 py-5 rounded-full text-base bg-white text-navy-900 placeholder-gray-400 shadow-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-0"
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-primary-500 hover:bg-primary-400 text-navy-900 font-semibold rounded-full transition-colors"
+                  >
+                    Search
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Categories Grid */}
-        <section className="py-12 sm:py-16 lg:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 sm:mb-14">
-              <h2 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-2">
-                Browse All Services
-              </h2>
-              <p className="text-gray-500 text-base sm:text-lg">
-                Choose a category to find the perfect Tasker for your project.
-              </p>
-            </div>
+        {/* Info Section - White Background */}
+        <section className="bg-white border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-2">
+              Hire a trusted Tasker and get things done
+            </h2>
+          </div>
+        </section>
 
+        {/* Categories and Subcategories Grid */}
+        <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {Array.from({ length: 16 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-64 rounded-2xl bg-gray-100 animate-pulse"
-                  />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="h-40 bg-gray-200 rounded-2xl animate-pulse" />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {categories.map((category) => {
-                  const IconComponent =
-                    categoryIcons[category.icon] || Star;
-                  const gradient =
-                    categoryColors[category.slug] || "from-gray-500 to-gray-600";
+              <div className="space-y-12">
+                {categories.map((parentCategory) => {
+                  const colors = categoryColors[parentCategory.slug] || {
+                    gradient: "from-gray-500 to-gray-600",
+                    top: "bg-gray-500",
+                    bottom: "bg-gray-600",
+                    bg: "bg-gray-50",
+                    text: "text-gray-700",
+                  };
+                  const Icon = categoryIcons[parentCategory.icon] || Star;
 
                   return (
-                    <Link
-                      key={category.id}
-                      href={`/services/${category.slug}`}
-                      className="group relative overflow-hidden rounded-2xl bg-white border border-gray-200 hover:border-transparent hover:shadow-xl transition-all duration-300"
-                    >
-                      {/* Gradient top bar */}
-                      <div
-                        className={`h-2 bg-gradient-to-r ${gradient}`}
-                      />
+                    <div key={parentCategory.id}>
+                      {/* Category Title */}
+                      <h3 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-6">
+                        {parentCategory.name}
+                      </h3>
 
-                      <div className="p-5 sm:p-6">
-                        {/* Icon */}
-                        <div
-                          className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                        >
-                          <IconComponent className="w-6 h-6 text-white" />
-                        </div>
+                      {/* Subcategories Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {parentCategory.children.map((subCategory) => (
+                          <Link
+                            key={subCategory.id}
+                            href={`/services/${parentCategory.slug}/${subCategory.slug}`}
+                            className="group relative overflow-hidden rounded-2xl h-40 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
+                          >
+                            {/* Card Background - Gradient */}
+                            <div
+                              className={`absolute inset-0 bg-gradient-to-b ${colors.gradient} opacity-90 group-hover:opacity-100 transition-opacity`}
+                            />
 
-                        {/* Title */}
-                        <h3 className="text-lg font-semibold text-navy-900 mb-1.5 group-hover:text-primary-600 transition-colors">
-                          {category.name}
-                        </h3>
-
-                        {/* Description */}
-                        <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                          {category.description}
-                        </p>
-
-                        {/* Subcategory count + Arrow */}
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-gray-400">
-                            {category.children.length} services
-                          </span>
-                          <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-primary-500 group-hover:translate-x-1 transition-all" />
-                        </div>
-
-                        {/* Preview subcategories */}
-                        {category.children.length > 0 && (
-                          <div className="mt-3 pt-3 border-t border-gray-100">
-                            <div className="flex flex-wrap gap-1.5">
-                              {category.children.slice(0, 3).map((sub) => (
-                                <span
-                                  key={sub.id}
-                                  className="inline-block px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-50 rounded-full"
-                                >
-                                  {sub.name}
-                                </span>
-                              ))}
-                              {category.children.length > 3 && (
-                                <span className="inline-block px-2.5 py-1 text-xs font-medium text-primary-600 bg-primary-50 rounded-full">
-                                  +{category.children.length - 3} more
-                                </span>
-                              )}
+                            {/* Icon Area - Top */}
+                            <div className={`absolute top-0 inset-x-0 h-16 ${colors.top} flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity`}>
+                              <Icon className="w-8 h-8 text-white" />
                             </div>
-                          </div>
-                        )}
+
+                            {/* Content - Bottom */}
+                            <div className="absolute inset-0 flex flex-col justify-end p-5 text-white">
+                              <h4 className="text-sm font-semibold leading-tight group-hover:translate-y-0 transition-transform">
+                                {subCategory.name}
+                              </h4>
+                            </div>
+                          </Link>
+                        ))}
                       </div>
-                    </Link>
+                    </div>
                   );
                 })}
               </div>
             )}
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="bg-navy-900 py-16 sm:py-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Become a Tasker
-            </h2>
-            <p className="text-gray-300 text-lg mb-8 max-w-xl mx-auto">
-              Earn money on your schedule. Join thousands of Taskers already using Doyo.
-            </p>
-            <Link
-              href="/become-tasker"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary-500 hover:bg-primary-400 text-navy-900 font-semibold rounded-full transition-colors text-base"
-            >
-              Get Started
-              <ChevronRight className="w-5 h-5" />
-            </Link>
           </div>
         </section>
       </main>

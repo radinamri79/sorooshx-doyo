@@ -1,7 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    ServiceCategoryViewSet,
     ProviderViewSet,
     ProviderServiceViewSet,
     PortfolioItemViewSet,
@@ -9,7 +8,6 @@ from .views import (
 )
 
 router = DefaultRouter()
-router.register(r"categories", ServiceCategoryViewSet, basename="category")
 router.register(r"", ProviderViewSet, basename="provider")
 router.register(r"my/services", ProviderServiceViewSet, basename="my-service")
 router.register(r"my/portfolio", PortfolioItemViewSet, basename="my-portfolio")
