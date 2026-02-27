@@ -62,17 +62,6 @@ export default function CategoryPage() {
           </div>
 
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
-            {/* Breadcrumb */}
-            <nav className="flex items-center justify-center gap-2 text-sm text-gray-400 mb-6 flex-wrap">
-              <Link href="/services" className="hover:text-white transition-colors">
-                Services
-              </Link>
-              <ChevronRight className="w-4 h-4 shrink-0" />
-              <span className="text-white font-medium">
-                {isLoading ? "Loading…" : (category?.name ?? categorySlug)}
-              </span>
-            </nav>
-
             {isLoading ? (
               <div className="space-y-4 flex flex-col items-center">
                 <div className="w-72 h-14 bg-white/10 rounded-xl animate-pulse" />
@@ -134,8 +123,19 @@ export default function CategoryPage() {
 
         {/* ─── Subcategory cards – same image-card structure as services page ─── */}
         {!error && (
-          <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+          <section className="bg-gray-50 py-12 sm:py-16 lg:py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-2 text-sm text-gray-600 mb-8 flex-wrap">
+                <Link href="/services" className="hover:text-navy-900 transition-colors">
+                  Services
+                </Link>
+                <ChevronRight className="w-4 h-4 shrink-0" />
+                <span className="text-navy-900 font-medium">
+                  {isLoading ? "Loading…" : (category?.name ?? categorySlug)}
+                </span>
+              </nav>
+
               <h2 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-8 sm:mb-10">
                 {isLoading ? (
                   <span className="inline-block w-64 h-9 bg-gray-200 rounded-lg animate-pulse" />
