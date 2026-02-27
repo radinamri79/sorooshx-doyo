@@ -265,9 +265,11 @@ export default function BecomeATaskerPage() {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<ServiceCategory | null>(null);
+  const [locationSearch, setLocationSearch] = useState("");
   const [categorySearch, setCategorySearch] = useState("");
   const [subcategorySearch, setSubcategorySearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showSubcategoryDropdown, setShowSubcategoryDropdown] = useState(false);
 
@@ -278,6 +280,10 @@ export default function BecomeATaskerPage() {
       .catch(console.error)
       .finally(() => setIsLoading(false));
   }, []);
+
+  const filteredLocations = LOCATIONS.filter((loc) =>
+    loc.toLowerCase().includes(locationSearch.toLowerCase())
+  );
 
   const filteredCategories = categories.filter((cat) =>
     cat.name.toLowerCase().includes(categorySearch.toLowerCase())
@@ -328,25 +334,68 @@ export default function BecomeATaskerPage() {
                   Select your area &amp; services
                 </h2>
 
-                {/* Location Selector */}
+                {/* Location Selector with Search */}
                 <div>
                   <label className="block text-sm font-semibold text-navy-900 mb-3">
                     Select your area
                   </label>
                   <div className="relative">
-                    <select
-                      value={selectedLocation}
-                      onChange={(e) => setSelectedLocation(e.target.value)}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 appearance-none text-base text-navy-900 bg-white border-2 border-gray-200 rounded-lg hover:border-primary-400 focus:border-primary-500 focus:outline-none transition-colors"
+                    <button
+                      onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 text-left text-base text-navy-900 bg-white border-2 border-gray-200 rounded-lg hover:border-primary-400 focus:border-primary-500 focus:outline-none transition-colors flex items-center justify-between"
                     >
-                      <option value="">Choose a location...</option>
-                      {LOCATIONS.map((loc) => (
-                        <option key={loc} value={loc}>
-                          {loc}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                      <span>
+                        {selectedLocation ? selectedLocation : "Choose a location..."}
+                      </span>
+                      <ChevronDown
+                        className={`w-5 h-5 text-gray-400 transition-transform ${
+                          showLocationDropdown ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {/* Dropdown with search */}
+                    {showLocationDropdown && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-200 rounded-lg shadow-lg z-50">
+                        <div className="p-3 sticky top-0 bg-white border-b border-gray-100">
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Search locations..."
+                              value={locationSearch}
+                              onChange={(e) => setLocationSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 py-2 text-sm text-navy-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary-400"
+                            />
+                          </div>
+                        </div>
+                        <div className="max-h-60 overflow-y-auto">
+                          {filteredLocations.length > 0 ? (
+                            filteredLocations.map((loc) => (
+                              <button
+                                key={loc}
+                                onClick={() => {
+                                  setSelectedLocation(loc);
+                                  setLocationSearch("");
+                                  setShowLocationDropdown(false);
+                                }}
+                                className={`w-full text-left px-4 py-3 text-sm border-b border-gray-100 hover:bg-primary-50 transition-colors ${
+                                  selectedLocation === loc
+                                    ? "bg-primary-100 text-primary-900 font-semibold"
+                                    : "text-navy-900"
+                                }`}
+                              >
+                                {loc}
+                              </button>
+                            ))
+                          ) : (
+                            <div className="px-4 py-6 text-sm text-gray-500 text-center">
+                              No locations found
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -383,7 +432,7 @@ export default function BecomeATaskerPage() {
                               placeholder="Search categories..."
                               value={categorySearch}
                               onChange={(e) => setCategorySearch(e.target.value)}
-                              className="w-full pl-10 pr-4 py-2 text-sm text-navy-900 bg-gray-50 border border-gray-200 rounded focus:outline-none focus:border-primary-400"
+                              className="w-full pl-10 pr-4 py-2 text-sm text-navy-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary-400"
                             />
                           </div>
                         </div>
@@ -452,7 +501,7 @@ export default function BecomeATaskerPage() {
                                 placeholder="Search sub-categories..."
                                 value={subcategorySearch}
                                 onChange={(e) => setSubcategorySearch(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 text-sm text-navy-900 bg-gray-50 border border-gray-200 rounded focus:outline-none focus:border-primary-400"
+                                className="w-full pl-10 pr-4 py-2 text-sm text-navy-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-primary-400"
                               />
                             </div>
                           </div>
@@ -490,7 +539,7 @@ export default function BecomeATaskerPage() {
 
               {/* Right: Earnings Display */}
               <div className="lg:sticky lg:top-24">
-                <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 space-y-8">
+                <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 space-y-8">
                   {/* Earnings Card */}
                   <div className="text-center">
                     <p className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wider">
