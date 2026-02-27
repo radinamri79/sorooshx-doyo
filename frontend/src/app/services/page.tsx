@@ -116,6 +116,9 @@ export default function ServicesPage() {
                           src={img}
                           alt={cat.name}
                           fill
+                          priority
+                          unoptimized
+                          draggable={false}
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                         />
