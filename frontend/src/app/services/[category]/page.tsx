@@ -2,70 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import { servicesApi } from "@/lib/api";
+import { getCategoryImage } from "@/lib/categoryImages";
 import { ServiceCategory } from "@/types";
-import {
-  Star,
-  Wrench,
-  Truck,
-  Sofa,
-  Monitor,
-  Sparkles,
-  ShoppingCart,
-  Home,
-  TreePine,
-  Gift,
-  Snowflake,
-  User,
-  Baby,
-  Laptop,
-  Building,
-  Shield,
-  ChevronRight,
-  ArrowRight,
-  ArrowLeft,
-} from "lucide-react";
-
-const categoryIcons: Record<string, React.ElementType> = {
-  star: Star,
-  wrench: Wrench,
-  truck: Truck,
-  sofa: Sofa,
-  monitor: Monitor,
-  sparkles: Sparkles,
-  "shopping-cart": ShoppingCart,
-  home: Home,
-  "tree-pine": TreePine,
-  gift: Gift,
-  snowflake: Snowflake,
-  user: User,
-  baby: Baby,
-  laptop: Laptop,
-  building: Building,
-  shield: Shield,
-};
-
-const categoryColors: Record<string, { gradient: string; bg: string; text: string }> = {
-  featured: { gradient: "from-amber-500 to-orange-500", bg: "bg-amber-50", text: "text-amber-700" },
-  handyman: { gradient: "from-blue-500 to-indigo-500", bg: "bg-blue-50", text: "text-blue-700" },
-  moving: { gradient: "from-emerald-500 to-teal-500", bg: "bg-emerald-50", text: "text-emerald-700" },
-  "furniture-assembly": { gradient: "from-violet-500 to-purple-500", bg: "bg-violet-50", text: "text-violet-700" },
-  mounting: { gradient: "from-sky-500 to-blue-500", bg: "bg-sky-50", text: "text-sky-700" },
-  cleaning: { gradient: "from-pink-500 to-rose-500", bg: "bg-pink-50", text: "text-pink-700" },
-  "shopping-delivery": { gradient: "from-orange-500 to-red-500", bg: "bg-orange-50", text: "text-orange-700" },
-  "ikea-services": { gradient: "from-yellow-500 to-amber-500", bg: "bg-yellow-50", text: "text-yellow-700" },
-  yardwork: { gradient: "from-green-500 to-emerald-500", bg: "bg-green-50", text: "text-green-700" },
-  holidays: { gradient: "from-red-500 to-pink-500", bg: "bg-red-50", text: "text-red-700" },
-  "winter-tasks": { gradient: "from-cyan-500 to-blue-500", bg: "bg-cyan-50", text: "text-cyan-700" },
-  "personal-assistant": { gradient: "from-indigo-500 to-violet-500", bg: "bg-indigo-50", text: "text-indigo-700" },
-  "baby-prep": { gradient: "from-rose-400 to-pink-400", bg: "bg-rose-50", text: "text-rose-700" },
-  "online-tasks": { gradient: "from-teal-500 to-cyan-500", bg: "bg-teal-50", text: "text-teal-700" },
-  office: { gradient: "from-slate-500 to-gray-600", bg: "bg-slate-50", text: "text-slate-700" },
-  contactless: { gradient: "from-lime-500 to-green-500", bg: "bg-lime-50", text: "text-lime-700" },
-};
+import { Search, ChevronRight, ArrowLeft } from "lucide-react";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -74,6 +18,7 @@ export default function CategoryPage() {
   const [category, setCategory] = useState<ServiceCategory | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     if (!categorySlug) return;
@@ -85,145 +30,168 @@ export default function CategoryPage() {
       .finally(() => setIsLoading(false));
   }, [categorySlug]);
 
-  const colors = categoryColors[categorySlug] || {
-    gradient: "from-gray-500 to-gray-600",
-    bg: "bg-gray-50",
-    text: "text-gray-700",
+  const handleSearch = () => {
+    if (searchValue.trim()) {
+      window.location.href = `/providers?search=${encodeURIComponent(searchValue)}&category=${categorySlug}`;
+    }
   };
 
-  const IconComponent = category
-    ? categoryIcons[category.icon] || Star
-    : Star;
+  const heroImage = getCategoryImage(categorySlug);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className={`bg-gradient-to-br ${colors.gradient} pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-32 lg:pb-20`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* ─── Hero ─── */}
+        <section className="relative bg-navy-900 min-h-[62vh] flex items-center pt-24 pb-16 sm:pt-28 sm:pb-20 overflow-hidden">
+          {/* Faint category image behind blobs */}
+          <Image
+            src={heroImage}
+            alt={category?.name ?? "Category"}
+            fill
+            className="object-cover object-center opacity-20"
+            priority
+          />
+          <div className="absolute inset-0 bg-navy-900/70" />
+
+          {/* Decorative blobs – same as home */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary-500/15 rounded-full blur-3xl" />
+            <div className="absolute -bottom-20 -left-40 w-[400px] h-[400px] bg-navy-700/50 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-white/70 mb-6">
+            <nav className="flex items-center justify-center gap-2 text-sm text-gray-400 mb-6 flex-wrap">
               <Link href="/services" className="hover:text-white transition-colors">
                 Services
               </Link>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 shrink-0" />
               <span className="text-white font-medium">
-                {isLoading ? "Loading..." : category?.name}
+                {isLoading ? "Loading…" : (category?.name ?? categorySlug)}
               </span>
             </nav>
 
             {isLoading ? (
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-white/20 rounded-2xl animate-pulse" />
-                <div className="w-64 h-10 bg-white/20 rounded-lg animate-pulse" />
-                <div className="w-96 h-6 bg-white/20 rounded-lg animate-pulse" />
-              </div>
-            ) : error || !category ? (
-              <div className="text-center py-12">
-                <h1 className="text-3xl font-bold text-white mb-4">Category Not Found</h1>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center gap-2 text-white/80 hover:text-white"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Services
-                </Link>
+              <div className="space-y-4 flex flex-col items-center">
+                <div className="w-72 h-14 bg-white/10 rounded-xl animate-pulse" />
+                <div className="w-48 h-6 bg-white/10 rounded-lg animate-pulse" />
               </div>
             ) : (
-              <div className="flex items-start gap-5">
-                <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
-                  <IconComponent className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
-                    {category.name}
-                  </h1>
-                  <p className="text-lg text-white/80 max-w-2xl">
-                    {category.description}
-                  </p>
-                  <p className="text-sm text-white/60 mt-3">
-                    {category.children.length} services available
-                  </p>
+              <>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight">
+                  {category?.name}{" "}
+                  <span className="text-primary-500">Services</span>
+                </h1>
+                <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-xl mx-auto">
+                  {category?.description
+                    ? category.description
+                    : `${category?.children.length ?? 0} services available`}
+                </p>
+              </>
+            )}
+
+            {/* Responsive search – same pattern as home HeroSection */}
+            <div className="max-w-2xl mx-auto mt-2">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-primary-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative flex items-center bg-white rounded-full shadow-2xl shadow-navy-950/30 overflow-hidden">
+                  <Search className="w-5 h-5 text-gray-400 ml-5 sm:ml-6 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder={`Search ${category?.name ?? "services"}…`}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                    className="flex-1 px-3 sm:px-4 py-4 sm:py-5 text-base sm:text-lg text-navy-900 placeholder-gray-400 outline-none bg-transparent"
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className="shrink-0 mr-2 px-5 sm:px-8 py-3 sm:py-3.5 bg-primary-500 hover:bg-primary-400 text-navy-900 font-bold text-sm sm:text-base rounded-full transition-colors"
+                  >
+                    Search
+                  </button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </section>
 
-        {/* Subcategories Grid */}
-        {!isLoading && !error && category && (
-          <section className="py-12 sm:py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-xl sm:text-2xl font-bold text-navy-900 mb-8">
-                All {category.name} Services
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {category.children.map((sub) => (
-                  <Link
-                    key={sub.id}
-                    href={`/services/${categorySlug}/${sub.slug}`}
-                    className="group flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-gray-200 bg-white hover:border-transparent hover:shadow-lg transition-all duration-200"
-                  >
-                    <div
-                      className={`w-10 h-10 rounded-lg ${colors.bg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}
-                    >
-                      <IconComponent className={`w-5 h-5 ${colors.text}`} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-navy-900 group-hover:text-primary-600 transition-colors truncate">
-                        {sub.name}
-                      </h3>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-primary-500 group-hover:translate-x-1 transition-all shrink-0" />
-                  </Link>
-                ))}
-              </div>
-            </div>
+        {/* ─── Error state ─── */}
+        {error && (
+          <section className="py-20 text-center">
+            <h1 className="text-3xl font-bold text-navy-900 mb-4">Category Not Found</h1>
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-navy-900 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Services
+            </Link>
           </section>
         )}
 
-        {/* Back to Services */}
-        <section className="pb-12 sm:pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-navy-900 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Browse all categories
-            </Link>
-          </div>
-        </section>
+        {/* ─── Subcategory cards – same image-card structure as services page ─── */}
+        {!error && (
+          <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-8 sm:mb-10">
+                {isLoading ? (
+                  <span className="inline-block w-64 h-9 bg-gray-200 rounded-lg animate-pulse" />
+                ) : (
+                  `All ${category?.name} Services`
+                )}
+              </h2>
 
-        {/* CTA */}
-        <section className="bg-navy-900 py-14 sm:py-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Ready to get started?
-            </h2>
-            <p className="text-gray-300 text-base sm:text-lg mb-8 max-w-xl mx-auto">
-              Hire a trusted Tasker for {category?.name?.toLowerCase() || "your project"} today.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/auth/register"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary-500 hover:bg-primary-400 text-navy-900 font-semibold rounded-full transition-colors"
-              >
-                Get Started
-                <ChevronRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href="/become-tasker"
-                className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/30 text-white hover:bg-white/10 font-semibold rounded-full transition-colors"
-              >
-                Become a Tasker
-              </Link>
+              {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="h-52 bg-gray-200 rounded-2xl animate-pulse" />
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {(category?.children ?? []).map((sub) => (
+                      /* block fixes height on <a> tag */
+                      <Link
+                        key={sub.id}
+                        href={`/services/${categorySlug}/${sub.slug}`}
+                        className="group relative block w-full h-52 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+                      >
+                        <Image
+                          src={heroImage}
+                          alt={sub.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-navy-900/85 via-navy-900/30 to-transparent" />
+                        <div className="absolute bottom-0 inset-x-0 p-4 flex items-end justify-between">
+                          <h3 className="text-base font-bold text-white drop-shadow">
+                            {sub.name}
+                          </h3>
+                          <ChevronRight className="w-5 h-5 text-white/70 group-hover:text-primary-400 group-hover:translate-x-1 transition-all shrink-0" />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  <div className="mt-10">
+                    <Link
+                      href="/services"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-navy-900 transition-colors"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Browse all categories
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <Footer />

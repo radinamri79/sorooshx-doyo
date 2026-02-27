@@ -16,6 +16,8 @@ from .filters import ProviderFilter
 
 class ServiceCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ServiceCategorySerializer
+    # Explicitly clear authentication so JWT cookie errors never block public access
+    authentication_classes = []
     permission_classes = [permissions.AllowAny]
     pagination_class = None
     lookup_field = "slug"
