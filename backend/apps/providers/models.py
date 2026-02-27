@@ -6,8 +6,8 @@ from django.db import models
 
 class ServiceCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
     description = models.TextField(blank=True, default="")
     icon = models.CharField(max_length=50, blank=True, default="")
     parent = models.ForeignKey(
@@ -19,6 +19,11 @@ class ServiceCategory(models.Model):
     class Meta:
         verbose_name_plural = "Service categories"
         ordering = ["name"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["slug", "parent"], name="unique_slug_per_parent"
+            ),
+        ]
 
     def __str__(self):
         return self.name

@@ -102,6 +102,9 @@ export const providersApi = {
 
   categories: () =>
     apiFetch<ServiceCategory[]>(`${API_URL}/providers/categories/`),
+
+  categoryBySlug: (slug: string) =>
+    apiFetch<ServiceCategory>(`${API_URL}/providers/categories/by-slug/${slug}/`),
 };
 
 // Orders API

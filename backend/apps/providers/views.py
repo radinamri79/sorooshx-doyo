@@ -15,10 +15,29 @@ from .filters import ProviderFilter
 
 
 class ServiceCategoryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = ServiceCategory.objects.filter(is_active=True, parent=None)
     serializer_class = ServiceCategorySerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
+    lookup_field = "slug"
+
+    def get_queryset(self):
+        return ServiceCategory.objects.filter(is_active=True, parent=None)
+
+    @action(detail=False, methods=["get"], url_path="by-slug/(?P<slug>[^/.]+)")
+    def by_slug(self, request, slug=None):
+        """Get a category (parent or child) by slug, with its children."""
+        category = ServiceCategory.objects.filter(slug=slug, is_active=True).first()
+        if not category:
+            return Response({"detail": "Not found."}, status=404)
+        serializer = self.get_serializer(category)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["get"], url_path="all-flat")
+    def all_flat(self, request):
+        """Return all categories (both parents and children) in a flat list."""
+        categories = ServiceCategory.objects.filter(is_active=True)
+        serializer = self.get_serializer(categories, many=True)
+        return Response(serializer.data)
 
 
 class ProviderViewSet(viewsets.ReadOnlyModelViewSet):
